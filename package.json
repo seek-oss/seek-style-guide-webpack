@@ -1,0 +1,56 @@
+{
+  "name": "seek-style-guide-webpack",
+  "version": "0.0.0-development",
+  "description": "Webpack config decorator to seek-style-guide applications",
+  "main": "index.js",
+  "scripts": {
+    "test": "webpack --config test/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seek-oss/seek-style-guide-webpack.git"
+  },
+  "author": "SEEK",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seek-oss/seek-style-guide-webpack/issues"
+  },
+  "homepage": "https://github.com/seek-oss/seek-style-guide-webpack#readme",
+  "dependencies": {
+    "autoprefixer": "^6.7.5",
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "babel-plugin-transform-class-properties": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "base64-font-loader": "0.0.4",
+    "chalk": "^1.1.3",
+    "css-loader": "^0.26.1",
+    "less-loader": "^2.2.3",
+    "postcss-loader": "^1.3.1",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.13.1",
+    "svgo-loader": "^1.1.2",
+    "uglify-loader": "^1.4.0",
+    "webpack-node-externals": "^1.5.4"
+  },
+  "peerDependencies": {
+    "seek-style-guide": "*"
+  },
+  "devDependencies": {
+    "classnames": "^2.2.5",
+    "extract-text-webpack-plugin": "^2.0.0-rc.3",
+    "lodash.omit": "^4.5.0",
+    "lodash.range": "^3.2.0",
+    "pad-left": "^2.1.0",
+    "react": "^15.4.2",
+    "react-autosuggest": "^8.0.1",
+    "react-dom": "^15.4.2",
+    "react-helmet": "^4.0.0",
+    "react-isolated-scroll": "^0.1.0",
+    "seek-style-guide": "18.0.0",
+    "static-site-generator-webpack-plugin": "^3.1.2",
+    "webpack": "^2.2.1"
+  }
+}
