@@ -1,6 +1,6 @@
 {
   "name": "seek-style-guide-webpack",
-  "version": "0.0.0-development",
+  "version": "0.1.0",
   "description": "Webpack config decorator to seek-style-guide applications",
   "main": "index.js",
   "scripts": {
