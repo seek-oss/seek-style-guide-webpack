@@ -1,10 +1,18 @@
 {
   "name": "seek-style-guide-webpack",
-  "version": "0.1.0",
+  "version": "0.0.0-development",
   "description": "Webpack config decorator to seek-style-guide applications",
   "main": "index.js",
   "scripts": {
-    "test": "webpack --config test/webpack.config.js"
+    "test": "webpack --config test/webpack.config.js",
+    "commit": "git-cz",
+    "commitmsg": "validate-commit-msg",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "repository": {
     "type": "git",
@@ -40,7 +48,10 @@
   },
   "devDependencies": {
     "classnames": "^2.2.5",
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.0.0",
     "extract-text-webpack-plugin": "^2.0.0-rc.3",
+    "husky": "^0.13.2",
     "lodash.omit": "^4.5.0",
     "lodash.range": "^3.2.0",
     "pad-left": "^2.1.0",
@@ -50,7 +61,9 @@
     "react-helmet": "^4.0.0",
     "react-isolated-scroll": "^0.1.0",
     "seek-style-guide": "18.0.0",
+    "semantic-release": "^6.3.2",
     "static-site-generator-webpack-plugin": "^3.1.2",
+    "validate-commit-msg": "^2.11.2",
     "webpack": "^2.2.1"
   }
 }
