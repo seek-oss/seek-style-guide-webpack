@@ -2,7 +2,7 @@
 
 # seek-style-guide-webpack
 
-Webpack 2 decorators for integrating with the seek-style-guide.
+[Webpack 2](https://webpack.js.org/) decorators for integrating with the [SEEK Style Guide](https://github.com/seek-oss/seek-style-guide).
 
 ## Installation
 
@@ -43,6 +43,10 @@ module.exports = decorateClientConfig(config, {
 ```
 
 Please note that, if your Webpack loaders aren't scoped to your local project files via the ["include" option](https://webpack.github.io/docs/configuration.html#module-loaders), the decorator will throw an error.
+
+## Contributing
+
+Refer to [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 
