@@ -1,24 +1,24 @@
-const path = require("path");
-const webpack = require("webpack");
-const autoprefixer = require("autoprefixer");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const StaticSiteGeneratorPlugin = require("static-site-generator-webpack-plugin");
-const decorateClientConfig = require("../index").decorateClientConfig;
-const decorateServerConfig = require("../index").decorateServerConfig;
+const path = require('path');
+const webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
+const decorateClientConfig = require('../index').decorateClientConfig;
+const decorateServerConfig = require('../index').decorateServerConfig;
 
 const appCss = new ExtractTextPlugin({
-  filename: "app.css"
+  filename: 'app.css'
 });
 
 // Must be absolute paths
-const appPaths = [path.resolve(__dirname, "app")];
+const appPaths = [path.resolve(__dirname, 'app')];
 
 const clientConfig = {
-  entry: path.resolve(__dirname, "app/client-render"),
+  entry: path.resolve(__dirname, 'app/client-render'),
 
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "index.js"
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'index.js'
   },
 
   module: {
@@ -26,9 +26,9 @@ const clientConfig = {
       {
         test: /\.js$/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: [["es2015", { modules: false }], "react"]
+            presets: [['es2015', { modules: false }], 'react']
           }
         },
         include: appPaths
@@ -36,36 +36,36 @@ const clientConfig = {
       {
         test: /\.less$/,
         use: appCss.extract({
-          fallback: "style-loader",
+          fallback: 'style-loader',
           use: [
             {
-              loader: "css-loader",
+              loader: 'css-loader',
               options: {
                 modules: true,
-                localIdentName: "[name]__[local]___[hash:base64:5]"
+                localIdentName: '[name]__[local]___[hash:base64:5]'
               }
             },
-            "less-loader"
+            'less-loader'
           ]
         }),
         include: appPaths
       },
       {
         test: /\.svg$/,
-        use: ["raw-loader", "svgo-loader"],
+        use: ['raw-loader', 'svgo-loader'],
         include: appPaths
       }
     ]
   },
 
   resolve: {
-    modules: ["node_modules", "wip_modules", "components"]
+    modules: ['node_modules', 'wip_modules', 'components']
   },
 
   plugins: [
     new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify("production")
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
       }
     }),
     appCss,
@@ -84,13 +84,13 @@ const clientConfig = {
 
 const serverConfig = {
   entry: {
-    render: path.resolve(__dirname, "app/server-render")
+    render: path.resolve(__dirname, 'app/server-render')
   },
 
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "render.js",
-    libraryTarget: "umd"
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'render.js',
+    libraryTarget: 'umd'
   },
 
   module: {
@@ -100,9 +100,9 @@ const serverConfig = {
         include: appPaths,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: [["es2015", { modules: false }], "react"]
+            presets: [['es2015', { modules: false }], 'react']
           }
         }
       },
@@ -112,23 +112,23 @@ const serverConfig = {
         exclude: /node_modules/,
         use: [
           {
-            loader: "css-loader/locals",
+            loader: 'css-loader/locals',
             options: {
               modules: true,
-              localIdentName: "[name]__[local]___[hash:base64:5]"
+              localIdentName: '[name]__[local]___[hash:base64:5]'
             }
           },
-          "less-loader"
+          'less-loader'
         ]
       },
       {
         test: /\.svg$/,
         include: appPaths,
-        use: ["raw-loader", "svgo-loader"]
+        use: ['raw-loader', 'svgo-loader']
       }
     ]
   },
-  plugins: [new StaticSiteGeneratorPlugin("render", "/")]
+  plugins: [new StaticSiteGeneratorPlugin('render', '/')]
 };
 
 module.exports = [

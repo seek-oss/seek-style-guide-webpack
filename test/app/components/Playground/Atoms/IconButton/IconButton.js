@@ -1,13 +1,13 @@
-import styles from "./IconButton.less";
-import React, { PropTypes } from "react";
+import styles from './IconButton.less';
+import React, { PropTypes } from 'react';
 
-import { PlusIcon, DeleteIcon } from "seek-style-guide/react";
+import { PlusIcon, DeleteIcon } from 'seek-style-guide/react';
 
 export default function IconButton({ children, icon }) {
   return (
     <button className={styles.root}>
-      {icon === "plus" ? <PlusIcon /> : null}
-      {icon === "delete" ? <DeleteIcon /> : null}
+      {icon === 'plus' ? <PlusIcon /> : null}
+      {icon === 'delete' ? <DeleteIcon /> : null}
       {children}
     </button>
   );
@@ -15,5 +15,5 @@ export default function IconButton({ children, icon }) {
 
 IconButton.propTypes = {
   children: PropTypes.node,
-  icon: PropTypes.oneOf(["plus", "delete"]).isRequired
+  icon: PropTypes.oneOf(['plus', 'delete']).isRequired
 };

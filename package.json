@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "webpack --config test/webpack.config.js",
-    "format": "prettier --write '*.js' 'test/**/*.js'",
+    "format": "prettier --single-quote --write '*.js' 'test/**/*.js'",
     "commit": "git-cz",
     "commitmsg": "validate-commit-msg",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
@@ -17,7 +17,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "prettier --write",
+      "prettier --single-quote --write",
       "git add"
     ]
   },

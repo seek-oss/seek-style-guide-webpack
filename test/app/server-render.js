@@ -1,6 +1,6 @@
-import React from "react";
-import { renderToString } from "react-dom/server";
-import App from "./App";
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import App from './App';
 
 // Static site renderer
 export default ({ path }) =>

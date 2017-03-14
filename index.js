@@ -1,24 +1,24 @@
-const path = require("path");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const nodeExternals = require("webpack-node-externals");
-const chalk = require("chalk");
+const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
+const chalk = require('chalk');
 
-const isProduction = () => process.env.NODE_ENV === "production";
+const isProduction = () => process.env.NODE_ENV === 'production';
 
-const styleGuidePath = path.dirname(require.resolve("seek-style-guide"));
+const styleGuidePath = path.dirname(require.resolve('seek-style-guide'));
 
 const styleGuidePaths = [
-  path.resolve(styleGuidePath, "react"),
-  path.resolve(styleGuidePath, "theme"),
-  path.resolve(styleGuidePath, "fonts")
+  path.resolve(styleGuidePath, 'react'),
+  path.resolve(styleGuidePath, 'theme'),
+  path.resolve(styleGuidePath, 'fonts')
 ];
 
 const resolveAliases = {
-  "seek-style-guide": styleGuidePath
+  'seek-style-guide': styleGuidePath
 };
 
 const singleLine = string =>
-  string.replace(/^ +/gm, " ").replace(/\n|\r/gm, "").trim();
+  string.replace(/^ +/gm, ' ').replace(/\n|\r/gm, '').trim();
 
 const warn = message =>
   console.warn(
@@ -48,8 +48,8 @@ const validateConfig = config => {
 
 const getLocalIdentName = () =>
   isProduction()
-    ? "[hash:base64:7]"
-    : "__STYLE_GUIDE__[name]__[local]___[hash:base64:7]";
+    ? '[hash:base64:7]'
+    : '__STYLE_GUIDE__[name]__[local]___[hash:base64:7]';
 
 const getCommonLoaders = () => [
   {
@@ -58,16 +58,16 @@ const getCommonLoaders = () => [
     exclude: /\.raw\.js$/,
     use: [
       {
-        loader: require.resolve("babel-loader"),
+        loader: require.resolve('babel-loader'),
         options: {
           babelrc: false,
           presets: [
-            [require.resolve("babel-preset-es2015"), { modules: false }],
-            require.resolve("babel-preset-react")
+            [require.resolve('babel-preset-es2015'), { modules: false }],
+            require.resolve('babel-preset-react')
           ],
           plugins: [
-            require.resolve("babel-plugin-transform-class-properties"),
-            require.resolve("babel-plugin-transform-object-rest-spread")
+            require.resolve('babel-plugin-transform-class-properties'),
+            require.resolve('babel-plugin-transform-object-rest-spread')
           ]
         }
       }
@@ -76,15 +76,15 @@ const getCommonLoaders = () => [
   {
     test: /\.raw\.js$/,
     include: styleGuidePaths,
-    use: [require.resolve("raw-loader"), require.resolve("uglify-loader")]
+    use: [require.resolve('raw-loader'), require.resolve('uglify-loader')]
   },
   {
     test: /\.svg$/,
     include: styleGuidePaths,
     use: [
-      require.resolve("raw-loader"),
+      require.resolve('raw-loader'),
       {
-        loader: require.resolve("svgo-loader"),
+        loader: require.resolve('svgo-loader'),
         options: {
           plugins: [
             { addAttributesToSVGElement: { attribute: 'focusable="false"' } }
@@ -168,13 +168,13 @@ const decorateServerConfig = config =>
         include: styleGuidePaths,
         use: [
           {
-            loader: require.resolve("css-loader/locals"),
+            loader: require.resolve('css-loader/locals'),
             options: {
               modules: true,
               localIdentName: getLocalIdentName()
             }
           },
-          require.resolve("less-loader")
+          require.resolve('less-loader')
         ]
       }
     ]
@@ -202,16 +202,16 @@ const decorateClientConfig = (config, options) => {
   const decorateStyleLoaders = extractTextPlugin
     ? loaders =>
         extractTextPlugin.extract({
-          fallback: require.resolve("style-loader"),
+          fallback: require.resolve('style-loader'),
           use: loaders
         })
-    : loaders => [require.resolve("style-loader"), ...loaders];
+    : loaders => [require.resolve('style-loader'), ...loaders];
 
   const extractWoff = new ExtractTextPlugin({
-    filename: "roboto.woff.css"
+    filename: 'roboto.woff.css'
   });
   const extractWoff2 = new ExtractTextPlugin({
-    filename: "roboto.woff2.css"
+    filename: 'roboto.woff2.css'
   });
 
   return decorateConfig(config, {
@@ -221,7 +221,7 @@ const decorateClientConfig = (config, options) => {
         include: styleGuidePaths,
         use: decorateStyleLoaders([
           {
-            loader: require.resolve("css-loader"),
+            loader: require.resolve('css-loader'),
             options: {
               modules: true,
               minimize: isProduction(),
@@ -230,12 +230,12 @@ const decorateClientConfig = (config, options) => {
             }
           },
           {
-            loader: require.resolve("postcss-loader"),
+            loader: require.resolve('postcss-loader'),
             options: {
-              plugins: () => [require("autoprefixer")]
+              plugins: () => [require('autoprefixer')]
             }
           },
-          require.resolve("less-loader")
+          require.resolve('less-loader')
         ])
       },
       {
@@ -243,7 +243,7 @@ const decorateClientConfig = (config, options) => {
         include: styleGuidePaths,
         use: extractWoff.extract({
           use: {
-            loader: require.resolve("css-loader"),
+            loader: require.resolve('css-loader'),
             options: {
               minimize: true
             }
@@ -255,7 +255,7 @@ const decorateClientConfig = (config, options) => {
         include: styleGuidePaths,
         use: extractWoff2.extract({
           use: {
-            loader: require.resolve("css-loader"),
+            loader: require.resolve('css-loader'),
             options: {
               minimize: true
             }
@@ -265,7 +265,7 @@ const decorateClientConfig = (config, options) => {
       {
         test: /\.woff2?$/,
         include: styleGuidePaths,
-        use: require.resolve("base64-font-loader")
+        use: require.resolve('base64-font-loader')
       }
     ],
     plugins: [extractWoff, extractWoff2]

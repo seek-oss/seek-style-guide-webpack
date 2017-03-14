@@ -1,6 +1,6 @@
-import styles from "./Playground.less";
+import styles from './Playground.less';
 
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 import {
   TextField,
@@ -19,11 +19,11 @@ import {
   Strong,
   Header,
   Footer
-} from "seek-style-guide/react";
+} from 'seek-style-guide/react';
 
-import TextLink from "./Atoms/TextLink/TextLink";
-import IconButton from "./Atoms/IconButton/IconButton";
-import Tab from "./Atoms/Tab/Tab";
+import TextLink from './Atoms/TextLink/TextLink';
+import IconButton from './Atoms/IconButton/IconButton';
+import Tab from './Atoms/Tab/Tab';
 
 const renderAsideProfile = () => (
   <Card transparent>
@@ -187,15 +187,15 @@ export default class Playground extends Component {
                   <TextLink href="https://www.seek.com.au">
                     20140714_-_cc11017_development...orm.pdf
                   </TextLink>
-                  {" "}
+                  {' '}
                   (75.82KB Added - 16 Dec 2016)
                 </Text>
                 <Text>Your “Default” resumé is not visible to employers.</Text>
                 <Text>
                   Update your privacy setting to “Standard” so that employers can view your resumé and get in contact with job opportunities.
-                  {" "}
+                  {' '}
                   <TextLink href="https://www.seek.com.au">Learn more</TextLink>
-                  {" "}
+                  {' '}
                   about your privacy.
                 </Text>
                 <Text subheading>Other Resumés</Text>
@@ -203,7 +203,7 @@ export default class Playground extends Component {
                   <TextLink href="https://www.seek.com.au">
                     Ohter_Resume.pdf
                   </TextLink>
-                  {" "}
+                  {' '}
                   (75.82KB Added - 16 Dec 2016)
                 </Text>
                 <IconButton icon="plus">Add summary</IconButton>
@@ -237,13 +237,13 @@ export default class Playground extends Component {
                 <TextField
                   id="email"
                   label="Email address"
-                  inputProps={{ type: "email" }}
+                  inputProps={{ type: 'email' }}
                   className={styles.fullWidthTextField}
                 />
                 <TextField
                   id="password"
                   label="Password"
-                  inputProps={{ type: "password" }}
+                  inputProps={{ type: 'password' }}
                   className={styles.fullWidthTextField}
                 />
                 <div>
@@ -254,7 +254,7 @@ export default class Playground extends Component {
                 <Button color="pink">Sign In</Button>
                 <Text>
                   Don’t have an account?
-                  {" "}
+                  {' '}
                   <TextLink href="https://www.seek.com.au">Register</TextLink>
                 </Text>
               </Section>
@@ -279,31 +279,31 @@ export default class Playground extends Component {
                   <TextField
                     id="fname"
                     label="First name"
-                    inputProps={{ type: "text" }}
+                    inputProps={{ type: 'text' }}
                     className={styles.fullWidthTextField}
                   />
                   <TextField
                     id="lname"
                     label="Last name"
-                    inputProps={{ type: "text" }}
+                    inputProps={{ type: 'text' }}
                     className={styles.fullWidthTextField}
                   />
                 </Columns>
                 <TextField
                   id="email"
                   label="Email address"
-                  inputProps={{ type: "email" }}
+                  inputProps={{ type: 'email' }}
                   className={styles.fullWidthTextField}
                 />
                 <TextField
                   id="password"
                   label="Password"
-                  inputProps={{ type: "password" }}
+                  inputProps={{ type: 'password' }}
                   className={styles.fullWidthTextField}
                 />
                 <Text secondary>
                   By registering you agree to the
-                  {" "}
+                  {' '}
                   <TextLink href="https://www.seek.com.au">
                     SEEK privacy policy
                   </TextLink>
@@ -311,7 +311,7 @@ export default class Playground extends Component {
                 <Button color="pink">Register</Button>
                 <Text>
                   Already have an account?
-                  {" "}
+                  {' '}
                   <TextLink href="https://www.seek.com.au">Sign in</TextLink>
                 </Text>
               </Section>
@@ -414,9 +414,9 @@ export default class Playground extends Component {
                 <Section>
                   <Text>
                     You must have the
-                    {" "}
+                    {' '}
                     <Strong>right to live and work</Strong>
-                    {" "}
+                    {' '}
                     in this location to apply for this job.
                   </Text>
                 </Section>

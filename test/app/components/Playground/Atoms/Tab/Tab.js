@@ -1,6 +1,6 @@
-import styles from "./Tab.less";
-import React, { PropTypes } from "react";
-import classnames from "classnames";
+import styles from './Tab.less';
+import React, { PropTypes } from 'react';
+import classnames from 'classnames';
 
 export default function Tab({ children, selected }) {
   return (

@@ -1,7 +1,7 @@
-import styles from "./TextLink.less";
-import React, { PropTypes } from "react";
-import ChevronIcon from "seek-style-guide/react/icons/ChevronIcon/ChevronIcon";
-import classnames from "classnames";
+import styles from './TextLink.less';
+import React, { PropTypes } from 'react';
+import ChevronIcon from 'seek-style-guide/react/icons/ChevronIcon/ChevronIcon';
+import classnames from 'classnames';
 
 const renderChevron = chevron => {
   if (!chevron) {
@@ -48,18 +48,18 @@ export default function TextLink(
   );
 }
 
-TextLink.displayName = "TextLink";
+TextLink.displayName = 'TextLink';
 
 TextLink.propTypes = {
   component: PropTypes.any,
   className: PropTypes.string,
   children: PropTypes.node,
-  chevron: PropTypes.oneOf(["up", "down", "right", "left"]),
+  chevron: PropTypes.oneOf(['up', 'down', 'right', 'left']),
   subheading: PropTypes.bool,
   heading: PropTypes.bool,
   hero: PropTypes.bool
 };
 
 TextLink.defaultProps = {
-  component: "a"
+  component: 'a'
 };
