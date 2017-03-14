@@ -1,91 +1,90 @@
-const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const nodeExternals = require('webpack-node-externals');
-const chalk = require('chalk');
+const path = require("path");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const nodeExternals = require("webpack-node-externals");
+const chalk = require("chalk");
 
-const isProduction = () => process.env.NODE_ENV === 'production';
+const isProduction = () => process.env.NODE_ENV === "production";
 
-const styleGuidePath = path.dirname(require.resolve('seek-style-guide'));
+const styleGuidePath = path.dirname(require.resolve("seek-style-guide"));
 
 const styleGuidePaths = [
-  path.resolve(styleGuidePath, 'react'),
-  path.resolve(styleGuidePath, 'theme'),
-  path.resolve(styleGuidePath, 'fonts')
+  path.resolve(styleGuidePath, "react"),
+  path.resolve(styleGuidePath, "theme"),
+  path.resolve(styleGuidePath, "fonts")
 ];
 
 const resolveAliases = {
-  'seek-style-guide': styleGuidePath
+  "seek-style-guide": styleGuidePath
 };
 
-const singleLine = string => string
-  .replace(/^ +/gm, ' ')
-  .replace(/\n|\r/gm, '')
-  .trim();
+const singleLine = string =>
+  string.replace(/^ +/gm, " ").replace(/\n|\r/gm, "").trim();
 
-const warn = message => console.warn(chalk.yellow(
-  `\nSEEK STYLE GUIDE WARNING:\n${singleLine(message)}\n`
-));
+const warn = message =>
+  console.warn(
+    chalk.yellow(`\nSEEK STYLE GUIDE WARNING:\n${singleLine(message)}\n`)
+  );
 
 const error = message => {
   throw new Error(
-    chalk.red(
-      `\nSEEK STYLE GUIDE ERROR:\n${singleLine(message)}\n`
-    )
+    chalk.red(`\nSEEK STYLE GUIDE ERROR:\n${singleLine(message)}\n`)
   );
 };
 
 const validateConfig = config => {
   config.module.rules.forEach(rules => {
     if (!rules.include) {
-      error(`
+      error(
+        `
         The following rules config is missing an
         "include" value: ${rules.test}. This is required by 'seek-style-guide'
         in order to avoid rules clashes. More info:
         https://webpack.github.io/docs/configuration.html#module-loaders
-      `);
+      `
+      );
     }
   });
 };
 
-const getLocalIdentName = () => isProduction() ?
-  '[hash:base64:7]' :
-  '__STYLE_GUIDE__[name]__[local]___[hash:base64:7]';
+const getLocalIdentName = () =>
+  isProduction()
+    ? "[hash:base64:7]"
+    : "__STYLE_GUIDE__[name]__[local]___[hash:base64:7]";
 
-const getCommonLoaders = () => ([
+const getCommonLoaders = () => [
   {
     test: /\.js$/,
     include: styleGuidePaths,
     exclude: /\.raw\.js$/,
-    use: [{
-      loader: require.resolve('babel-loader'),
-      options: {
-        babelrc: false,
-        presets: [
-          [require.resolve('babel-preset-es2015'), { modules: false }],
-          require.resolve('babel-preset-react')
-        ],
-        plugins: [
-          require.resolve('babel-plugin-transform-class-properties'),
-          require.resolve('babel-plugin-transform-object-rest-spread')
-        ]
+    use: [
+      {
+        loader: require.resolve("babel-loader"),
+        options: {
+          babelrc: false,
+          presets: [
+            [require.resolve("babel-preset-es2015"), { modules: false }],
+            require.resolve("babel-preset-react")
+          ],
+          plugins: [
+            require.resolve("babel-plugin-transform-class-properties"),
+            require.resolve("babel-plugin-transform-object-rest-spread")
+          ]
+        }
       }
-    }],
+    ]
   },
   {
     test: /\.raw\.js$/,
     include: styleGuidePaths,
-    use: [
-      require.resolve('raw-loader'),
-      require.resolve('uglify-loader')
-    ]
+    use: [require.resolve("raw-loader"), require.resolve("uglify-loader")]
   },
   {
     test: /\.svg$/,
     include: styleGuidePaths,
     use: [
-      require.resolve('raw-loader'),
+      require.resolve("raw-loader"),
       {
-        loader: require.resolve('svgo-loader'),
+        loader: require.resolve("svgo-loader"),
         options: {
           plugins: [
             { addAttributesToSVGElement: { attribute: 'focusable="false"' } }
@@ -94,7 +93,7 @@ const getCommonLoaders = () => ([
       }
     ]
   }
-]);
+];
 
 const decorateConfig = (config, options) => {
   const rules = options.rules || [];
@@ -114,31 +113,35 @@ const decorateConfig = (config, options) => {
     .concat(config.module.rules);
 
   // Prepend style guide plugins
-  config.plugins = plugins
-    .concat(config.plugins);
+  config.plugins = plugins.concat(config.plugins);
 
   // Provide externals, if provided
   if (externals) {
     if (config.externals) {
-      warn(`
+      warn(
+        `
         You've provided "externals" in your Webpack config.
         This means that the style guide cannot provide its
         own externals for you. It's recommended that you
         delete your externals and let the style guide take
         care of it, otherwise you will have to manually keep
         your own externals in sync with the style guide.
-      `);
+      `
+      );
     } else {
       config.externals = externals;
     }
   }
 
   // Add resolve aliases
-  const consumerAliases =
-    (config.resolve && config.resolve.alias) ? config.resolve.alias : {};
+  const consumerAliases = config.resolve && config.resolve.alias
+    ? config.resolve.alias
+    : {};
 
   for (var alias in resolveAliases) {
-    if (consumerAliases[alias] && consumerAliases[alias] !== resolveAliases[alias]) {
+    if (
+      consumerAliases[alias] && consumerAliases[alias] !== resolveAliases[alias]
+    ) {
       error(`Resolve alias '${alias}' is reserved. Please rename it.\n`);
     } else {
       consumerAliases[alias] = resolveAliases[alias];
@@ -151,36 +154,38 @@ const decorateConfig = (config, options) => {
   return config;
 };
 
-const decorateServerConfig = config => decorateConfig(config, {
-  externals: [
-    nodeExternals({
-      whitelist: styleGuidePaths
-    })
-  ],
+const decorateServerConfig = config =>
+  decorateConfig(config, {
+    externals: [
+      nodeExternals({
+        whitelist: styleGuidePaths
+      })
+    ],
 
-  rules: [
-    {
-      test: /\.less$/,
-      include: styleGuidePaths,
-      use: [
-        {
-          loader: require.resolve('css-loader/locals'),
-          options: {
-            modules: true,
-            localIdentName: getLocalIdentName()
-          }
-        },
-        require.resolve('less-loader')
-      ]
-    }
-  ]
-});
+    rules: [
+      {
+        test: /\.less$/,
+        include: styleGuidePaths,
+        use: [
+          {
+            loader: require.resolve("css-loader/locals"),
+            options: {
+              modules: true,
+              localIdentName: getLocalIdentName()
+            }
+          },
+          require.resolve("less-loader")
+        ]
+      }
+    ]
+  });
 
 const decorateClientConfig = (config, options) => {
   const extractTextPlugin = options && options.extractTextPlugin;
 
   if (extractTextPlugin === ExtractTextPlugin) {
-    error(`
+    error(
+      `
       You appear to be passing in a reference to "ExtractTextPlugin"
       directly, rather than creating an instance via
       "new ExtractTextPlugin(...)". This causes incorrect CSS to be generated
@@ -190,21 +195,23 @@ const decorateClientConfig = (config, options) => {
       pass it in instead. If you're not sure how to do this, you can see
       the Webpack documentation at
       https://github.com/webpack/extract-text-webpack-plugin/tree/webpack-1
-    `);
+    `
+    );
   }
 
-  const decorateStyleLoaders = extractTextPlugin ?
-    loaders => extractTextPlugin.extract({
-      fallback: require.resolve('style-loader'),
-      use: loaders
-    }) :
-    loaders => [require.resolve('style-loader'), ...loaders];
+  const decorateStyleLoaders = extractTextPlugin
+    ? loaders =>
+        extractTextPlugin.extract({
+          fallback: require.resolve("style-loader"),
+          use: loaders
+        })
+    : loaders => [require.resolve("style-loader"), ...loaders];
 
   const extractWoff = new ExtractTextPlugin({
-    filename: 'roboto.woff.css'
+    filename: "roboto.woff.css"
   });
   const extractWoff2 = new ExtractTextPlugin({
-    filename: 'roboto.woff2.css'
+    filename: "roboto.woff2.css"
   });
 
   return decorateConfig(config, {
@@ -214,7 +221,7 @@ const decorateClientConfig = (config, options) => {
         include: styleGuidePaths,
         use: decorateStyleLoaders([
           {
-            loader: require.resolve('css-loader'),
+            loader: require.resolve("css-loader"),
             options: {
               modules: true,
               minimize: isProduction(),
@@ -223,12 +230,12 @@ const decorateClientConfig = (config, options) => {
             }
           },
           {
-            loader: require.resolve('postcss-loader'),
+            loader: require.resolve("postcss-loader"),
             options: {
-              plugins: () => [require('autoprefixer')]
+              plugins: () => [require("autoprefixer")]
             }
           },
-          require.resolve('less-loader')
+          require.resolve("less-loader")
         ])
       },
       {
@@ -236,7 +243,7 @@ const decorateClientConfig = (config, options) => {
         include: styleGuidePaths,
         use: extractWoff.extract({
           use: {
-            loader: require.resolve('css-loader'),
+            loader: require.resolve("css-loader"),
             options: {
               minimize: true
             }
@@ -248,7 +255,7 @@ const decorateClientConfig = (config, options) => {
         include: styleGuidePaths,
         use: extractWoff2.extract({
           use: {
-            loader: require.resolve('css-loader'),
+            loader: require.resolve("css-loader"),
             options: {
               minimize: true
             }
@@ -258,13 +265,10 @@ const decorateClientConfig = (config, options) => {
       {
         test: /\.woff2?$/,
         include: styleGuidePaths,
-        use: require.resolve('base64-font-loader')
+        use: require.resolve("base64-font-loader")
       }
     ],
-    plugins: [
-      extractWoff,
-      extractWoff2
-    ]
+    plugins: [extractWoff, extractWoff2]
   });
 };
 

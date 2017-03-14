@@ -1,6 +1,6 @@
-import styles from './Tab.less';
-import React, { PropTypes } from 'react';
-import classnames from 'classnames';
+import styles from "./Tab.less";
+import React, { PropTypes } from "react";
+import classnames from "classnames";
 
 export default function Tab({ children, selected }) {
   return (
@@ -8,7 +8,8 @@ export default function Tab({ children, selected }) {
       className={classnames({
         [styles.root]: true,
         [styles.selected]: selected
-      })}>
+      })}
+    >
       {children}
     </h5>
   );

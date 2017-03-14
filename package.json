@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "webpack --config test/webpack.config.js",
+    "format": "prettier --write '*.js' 'test/**/*.js'",
     "commit": "git-cz",
     "commitmsg": "validate-commit-msg",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
@@ -13,6 +14,12 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -52,9 +59,11 @@
     "cz-conventional-changelog": "^2.0.0",
     "extract-text-webpack-plugin": "^2.0.0-rc.3",
     "husky": "^0.13.2",
+    "lint-staged": "^3.4.0",
     "lodash.omit": "^4.5.0",
     "lodash.range": "^3.2.0",
     "pad-left": "^2.1.0",
+    "prettier": "^0.22.0",
     "react": "^15.4.2",
     "react-autosuggest": "^8.0.1",
     "react-dom": "^15.4.2",
