@@ -1,3 +1,5 @@
+[![Build Status](https://img.shields.io/travis/seek-oss/seek-style-guide-webpack/master.svg?style=flat-square)](http://travis-ci.org/seek-oss/seek-style-guide-webpack) [![npm](https://img.shields.io/npm/v/seek-style-guide-webpack.svg?style=flat-square)](https://www.npmjs.com/package/seek-style-guide-webpack)
+
 # seek-style-guide-webpack
 
 Webpack 2 decorators for integrating with the seek-style-guide.
