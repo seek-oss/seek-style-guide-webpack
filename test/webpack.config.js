@@ -11,9 +11,7 @@ const appCss = new ExtractTextPlugin({
 });
 
 // Must be absolute paths
-const appPaths = [
-  path.resolve(__dirname, 'app')
-];
+const appPaths = [path.resolve(__dirname, 'app')];
 
 const clientConfig = {
   entry: path.resolve(__dirname, 'app/client-render'),
@@ -30,10 +28,7 @@ const clientConfig = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [
-              ['es2015', { modules: false }],
-              'react'
-            ],
+            presets: [['es2015', { modules: false }], 'react']
           }
         },
         include: appPaths
@@ -57,10 +52,7 @@ const clientConfig = {
       },
       {
         test: /\.svg$/,
-        use: [
-          'raw-loader',
-          'svgo-loader'
-        ],
+        use: ['raw-loader', 'svgo-loader'],
         include: appPaths
       }
     ]
@@ -110,10 +102,7 @@ const serverConfig = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [
-              ['es2015', { modules: false }],
-              'react'
-            ],
+            presets: [['es2015', { modules: false }], 'react']
           }
         }
       },
@@ -135,16 +124,11 @@ const serverConfig = {
       {
         test: /\.svg$/,
         include: appPaths,
-        use: [
-          'raw-loader',
-          'svgo-loader'
-        ]
+        use: ['raw-loader', 'svgo-loader']
       }
     ]
   },
-  plugins: [
-    new StaticSiteGeneratorPlugin('render', '/')
-  ]
+  plugins: [new StaticSiteGeneratorPlugin('render', '/')]
 };
 
 module.exports = [

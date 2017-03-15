@@ -8,7 +8,8 @@ export default function Tab({ children, selected }) {
       className={classnames({
         [styles.root]: true,
         [styles.selected]: selected
-      })}>
+      })}
+    >
       {children}
     </h5>
   );

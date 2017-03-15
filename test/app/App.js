@@ -1,5 +1,3 @@
 import React from 'react';
 
-export default () => (
-  <span>HKJLHSNFLKNDKDFJPKIDSNFN</span>
-);
+export default () => <span>HKJLHSNFLKNDKDFJPKIDSNFN</span>;
