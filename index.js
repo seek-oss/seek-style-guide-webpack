@@ -3,6 +3,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const chalk = require('chalk');
 
+const autoprefixerConfig = require('./autoprefixer.config');
+
 const isProduction = () => process.env.NODE_ENV === 'production';
 
 const styleGuidePath = path.dirname(require.resolve('seek-style-guide'));
@@ -232,7 +234,7 @@ const decorateClientConfig = (config, options) => {
           {
             loader: require.resolve('postcss-loader'),
             options: {
-              plugins: () => [require('autoprefixer')]
+              plugins: () => [require('autoprefixer')(autoprefixerConfig)]
             }
           },
           require.resolve('less-loader')
@@ -274,5 +276,6 @@ const decorateClientConfig = (config, options) => {
 
 module.exports = {
   decorateServerConfig,
-  decorateClientConfig
+  decorateClientConfig,
+  autoprefixerConfig
 };
