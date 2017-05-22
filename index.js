@@ -15,6 +15,15 @@ const styleGuidePaths = [
   path.resolve(styleGuidePath, 'fonts')
 ];
 
+const getIncludePaths = (options) => {
+  const extraIncludePaths = (options && options.extraIncludePaths) || [];
+
+  return [
+    ...styleGuidePaths,
+    ...extraIncludePaths
+  ];
+}
+
 const resolveAliases = {
   'seek-style-guide': styleGuidePath
 };
@@ -53,10 +62,10 @@ const getLocalIdentName = () =>
     ? '[hash:base64:7]'
     : '__STYLE_GUIDE__[name]__[local]___[hash:base64:7]';
 
-const getCommonLoaders = () => [
+const getCommonLoaders = (includes) => [
   {
     test: /\.js$/,
-    include: styleGuidePaths,
+    include: includes,
     exclude: /\.raw\.js$/,
     use: [
       {
@@ -77,12 +86,12 @@ const getCommonLoaders = () => [
   },
   {
     test: /\.raw\.js$/,
-    include: styleGuidePaths,
+    include: includes,
     use: [require.resolve('raw-loader'), require.resolve('uglify-loader')]
   },
   {
     test: /\.svg$/,
-    include: styleGuidePaths,
+    include: includes,
     use: [
       require.resolve('raw-loader'),
       {
@@ -97,7 +106,7 @@ const getCommonLoaders = () => [
   }
 ];
 
-const decorateConfig = (config, options) => {
+const decorateConfig = (config, includes, options) => {
   const rules = options.rules || [];
   const plugins = options.plugins || [];
   const externals = options.externals;
@@ -110,7 +119,7 @@ const decorateConfig = (config, options) => {
   validateConfig(config);
 
   // Prepend style guide loaders
-  config.module.rules = getCommonLoaders()
+  config.module.rules = getCommonLoaders(includes)
     .concat(rules)
     .concat(config.module.rules);
 
@@ -156,18 +165,20 @@ const decorateConfig = (config, options) => {
   return config;
 };
 
-const decorateServerConfig = config =>
-  decorateConfig(config, {
+const decorateServerConfig = (config, options) => {
+  const allIncludes = getIncludePaths(options);
+
+  return decorateConfig(config, allIncludes, {
     externals: [
       nodeExternals({
-        whitelist: styleGuidePaths
+        whitelist: allIncludes
       })
     ],
 
     rules: [
       {
         test: /\.less$/,
-        include: styleGuidePaths,
+        include: allIncludes,
         use: [
           {
             loader: require.resolve('css-loader/locals'),
@@ -181,9 +192,11 @@ const decorateServerConfig = config =>
       }
     ]
   });
+}
 
 const decorateClientConfig = (config, options) => {
   const extractTextPlugin = options && options.extractTextPlugin;
+  const allIncludes = getIncludePaths(options);
 
   if (extractTextPlugin === ExtractTextPlugin) {
     error(
@@ -216,11 +229,11 @@ const decorateClientConfig = (config, options) => {
     filename: 'roboto.woff2.css'
   });
 
-  return decorateConfig(config, {
+  return decorateConfig(config, allIncludes, {
     rules: [
       {
         test: /\.less$/,
-        include: styleGuidePaths,
+        include: allIncludes,
         use: decorateStyleLoaders([
           {
             loader: require.resolve('css-loader'),
@@ -242,7 +255,7 @@ const decorateClientConfig = (config, options) => {
       },
       {
         test: /Roboto.woff.css$/,
-        include: styleGuidePaths,
+        include: allIncludes,
         use: extractWoff.extract({
           use: {
             loader: require.resolve('css-loader'),
@@ -254,7 +267,7 @@ const decorateClientConfig = (config, options) => {
       },
       {
         test: /Roboto.woff2.css$/,
-        include: styleGuidePaths,
+        include: allIncludes,
         use: extractWoff2.extract({
           use: {
             loader: require.resolve('css-loader'),
@@ -266,7 +279,7 @@ const decorateClientConfig = (config, options) => {
       },
       {
         test: /\.woff2?$/,
-        include: styleGuidePaths,
+        include: allIncludes,
         use: require.resolve('base64-font-loader')
       }
     ],
