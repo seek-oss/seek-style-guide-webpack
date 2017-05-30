@@ -44,6 +44,17 @@ module.exports = decorateClientConfig(config, {
 
 Please note that, if your Webpack loaders aren't scoped to your local project files via the ["include" option](https://webpack.github.io/docs/configuration.html#module-loaders), the decorator will throw an error.
 
+### Extra includes
+
+If you have other external node_modules that need to be compiled in the same way as the seek-style-guide then you can pass an extra parameter to the decorators.
+
+```js
+module.exports = decorateClientConfig(config, {
+  // List of node_modules that need to be compiled by webpack
+  extraIncludePaths: ['my-other-module']
+});
+```
+
 ## Contributing
 
 Refer to [CONTRIBUTING.md](./CONTRIBUTING.md).

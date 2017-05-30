@@ -16,7 +16,8 @@ const styleGuidePaths = [
 ];
 
 const getIncludePaths = (options) => {
-  const extraIncludePaths = (options && options.extraIncludePaths) || [];
+  const extraIncludePaths = ((options && options.extraIncludePaths) || [])
+    .map(include => path.dirname(require.resolve(include)));
 
   return [
     ...styleGuidePaths,
