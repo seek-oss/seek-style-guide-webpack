@@ -223,13 +223,6 @@ const decorateClientConfig = (config, options) => {
         })
     : loaders => [require.resolve('style-loader'), ...loaders];
 
-  const extractWoff = new ExtractTextPlugin({
-    filename: 'roboto.woff.css'
-  });
-  const extractWoff2 = new ExtractTextPlugin({
-    filename: 'roboto.woff2.css'
-  });
-
   return decorateConfig(config, allIncludes, {
     rules: [
       {
@@ -253,38 +246,8 @@ const decorateClientConfig = (config, options) => {
           },
           require.resolve('less-loader')
         ])
-      },
-      {
-        test: /Roboto.woff.css$/,
-        include: allIncludes,
-        use: extractWoff.extract({
-          use: {
-            loader: require.resolve('css-loader'),
-            options: {
-              minimize: true
-            }
-          }
-        })
-      },
-      {
-        test: /Roboto.woff2.css$/,
-        include: allIncludes,
-        use: extractWoff2.extract({
-          use: {
-            loader: require.resolve('css-loader'),
-            options: {
-              minimize: true
-            }
-          }
-        })
-      },
-      {
-        test: /\.woff2?$/,
-        include: allIncludes,
-        use: require.resolve('base64-font-loader')
       }
-    ],
-    plugins: [extractWoff, extractWoff2]
+    ]
   });
 };
 
