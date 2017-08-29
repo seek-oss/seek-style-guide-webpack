@@ -9,20 +9,25 @@ const isProduction = () => process.env.NODE_ENV === 'production';
 
 const styleGuidePath = path.dirname(require.resolve('seek-style-guide'));
 
-const styleGuidePaths = [
-  path.resolve(styleGuidePath, 'react'),
-  path.resolve(styleGuidePath, 'theme'),
-  path.resolve(styleGuidePath, 'fonts')
+const styleGuideModules = [
+  'react',
+  'theme',
+  'fonts'
 ];
 
 const getIncludePaths = (options) => {
   const extraIncludePaths = ((options && options.extraIncludePaths) || [])
-    .map(include => path.dirname(require.resolve(include)));
 
-  return [
-    ...styleGuidePaths,
-    ...extraIncludePaths
-  ];
+  return {
+    relative: [
+      ...styleGuideModules.map(module => `seek-style-guide/${module}`),
+      ...extraIncludePaths
+    ],
+    absolute: [
+      ...styleGuideModules.map(module => path.resolve(styleGuidePath, module)),
+      ...extraIncludePaths.map(include => path.dirname(require.resolve(include)))
+    ]
+  }
 }
 
 const resolveAliases = {
@@ -167,19 +172,19 @@ const decorateConfig = (config, includes, options) => {
 };
 
 const decorateServerConfig = (config, options) => {
-  const allIncludes = getIncludePaths(options);
+  const { relative, absolute } = getIncludePaths(options);
 
-  return decorateConfig(config, allIncludes, {
+  return decorateConfig(config, absolute, {
     externals: [
       nodeExternals({
-        whitelist: allIncludes
+        whitelist: relative
       })
     ],
 
     rules: [
       {
         test: /\.less$/,
-        include: allIncludes,
+        include: absolute,
         use: [
           {
             loader: require.resolve('css-loader/locals'),
@@ -197,7 +202,7 @@ const decorateServerConfig = (config, options) => {
 
 const decorateClientConfig = (config, options) => {
   const extractTextPlugin = options && options.extractTextPlugin;
-  const allIncludes = getIncludePaths(options);
+  const { absolute } = getIncludePaths(options);
 
   if (extractTextPlugin === ExtractTextPlugin) {
     error(
@@ -223,11 +228,11 @@ const decorateClientConfig = (config, options) => {
         })
     : loaders => [require.resolve('style-loader'), ...loaders];
 
-  return decorateConfig(config, allIncludes, {
+  return decorateConfig(config, absolute, {
     rules: [
       {
         test: /\.less$/,
-        include: allIncludes,
+        include: absolute,
         use: decorateStyleLoaders([
           {
             loader: require.resolve('css-loader'),
