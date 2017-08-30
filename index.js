@@ -54,7 +54,7 @@ const validateConfig = config => {
     error(
       `
         This module has resolved the style-guide path as ${require.resolve('seek-style-guide')}.
-        That appears incorrect, did you link this module locally? Please unlink it as
+        That appears incorrect, did you link this module locally? Please unlink it,
         it does not resolve correctly when linked locally.
       `
     );
