@@ -4,7 +4,7 @@
   "description": "Webpack config decorator to seek-style-guide applications",
   "main": "index.js",
   "scripts": {
-    "test": "webpack --config test/webpack.config.js",
+    "test": "NODE_ENV=test webpack --config test/webpack.config.js",
     "format": "prettier --single-quote --write '*.js' 'test/**/*.js'",
     "commit": "git-cz",
     "commitmsg": "validate-commit-msg",
