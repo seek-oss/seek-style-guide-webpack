@@ -2,6 +2,7 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const chalk = require('chalk');
+const incorrectStyleGuidePath = require('./incorrectStyleGuidePath');
 
 const autoprefixerConfig = require('./autoprefixer.config');
 
@@ -49,6 +50,16 @@ const error = message => {
 };
 
 const validateConfig = config => {
+  if (incorrectStyleGuidePath) {
+    error(
+      `
+        This module has resolved the style path as ${require.resolve('seek-style-guide')}.
+        That appears incorrect, did you link this module locally? Please unlink it as
+        it does not resolve correctly when linked locally.
+      `
+    );
+  }
+
   config.module.rules.forEach(rules => {
     if (!rules.include) {
       error(
