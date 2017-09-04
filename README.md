@@ -2,7 +2,7 @@
 
 # seek-style-guide-webpack
 
-[Webpack 2](https://webpack.js.org/) decorators for integrating with the [SEEK Style Guide](https://github.com/seek-oss/seek-style-guide).
+[Webpack](https://webpack.js.org/) decorators for integrating with the [SEEK Style Guide](https://github.com/seek-oss/seek-style-guide).
 
 ## Installation
 
