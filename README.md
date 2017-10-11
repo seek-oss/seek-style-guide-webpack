@@ -2,6 +2,8 @@
 
 # seek-style-guide-webpack
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/seek-oss/seek-style-guide-webpack.svg)](https://greenkeeper.io/)
+
 [Webpack](https://webpack.js.org/) decorators for integrating with the [SEEK Style Guide](https://github.com/seek-oss/seek-style-guide).
 
 ## Installation
