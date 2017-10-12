@@ -40,6 +40,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "browserslist-config-seek": "^1.0.0",
     "chalk": "^2.1.0",
     "css-loader": "^0.28.7",
     "less": "^2.7.2",
