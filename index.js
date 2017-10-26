@@ -212,6 +212,14 @@ const decorateServerConfig = (config, options) => {
   });
 }
 
+const postcssPlugins = ({ cssSelectorPrefix }, autoprefixerConfig) => 
+  [require('autoprefixer')(autoprefixerConfig)]
+    .concat(!cssSelectorPrefix ? [] : [
+      require('postcss-prefix-selector')({
+        prefix: `:global(${cssSelectorPrefix})`
+      })
+    ]);
+
 const decorateClientConfig = (config, options) => {
   const extractTextPlugin = options && options.extractTextPlugin;
   const { absolute } = getIncludePaths(options);
@@ -258,7 +266,7 @@ const decorateClientConfig = (config, options) => {
           {
             loader: require.resolve('postcss-loader'),
             options: {
-              plugins: () => [require('autoprefixer')(autoprefixerConfig)]
+              plugins: () => postcssPlugins(options)
             }
           },
           require.resolve('less-loader')

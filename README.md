@@ -55,6 +55,17 @@ module.exports = decorateClientConfig(config, {
 });
 ```
 
+### CSS Selector Prefix
+
+This selector prefix is automatically prepended to all selectors to ensure styles don't leak out into the global scope.
+For example, this is used for generating the standalone header & footer in the style guide.
+
+```js
+module.exports = decorateClientConfig(config, {
+  cssSelectorPrefix: '.__SSG__'
+});
+```
+
 ## Contributing
 
 Refer to [CONTRIBUTING.md](./CONTRIBUTING.md).
