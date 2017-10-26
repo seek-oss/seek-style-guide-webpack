@@ -212,7 +212,7 @@ const decorateServerConfig = (config, options) => {
   });
 }
 
-const postcssPlugins = ({ cssSelectorPrefix }, autoprefixerConfig) => 
+const postcssPlugins = ({ cssSelectorPrefix } = {}) => 
   [require('autoprefixer')(autoprefixerConfig)]
     .concat(!cssSelectorPrefix ? [] : [
       require('postcss-prefix-selector')({
