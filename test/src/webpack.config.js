@@ -3,8 +3,8 @@ const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
-const decorateClientConfig = require('../index').decorateClientConfig;
-const decorateServerConfig = require('../index').decorateServerConfig;
+const decorateClientConfig = require('../../index').decorateClientConfig;
+const decorateServerConfig = require('../../index').decorateServerConfig;
 
 const appCss = new ExtractTextPlugin({
   filename: 'app.css'
@@ -17,7 +17,7 @@ const clientConfig = {
   entry: path.resolve(__dirname, 'app/client-render'),
 
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../dist'),
     filename: 'index.js'
   },
 
@@ -88,7 +88,7 @@ const serverConfig = {
   },
 
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../dist'),
     filename: 'render.js',
     libraryTarget: 'umd'
   },
