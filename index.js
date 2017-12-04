@@ -63,6 +63,15 @@ const validateConfig = config => {
     );
   }
 
+  if (config.module.loaders !== undefined) {
+    error(
+      `
+        You've configured your loaders with the legacy "module.loaders" field.
+        Please use the newer "module.rules" format instead.
+      `
+    );
+  }
+
   config.module.rules.forEach(rules => {
     if (!rules.include) {
       error(
