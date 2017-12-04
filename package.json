@@ -4,8 +4,10 @@
   "description": "Webpack config decorator to seek-style-guide applications",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test webpack --config test/webpack.config.js",
-    "format": "prettier --single-quote --write '*.js' 'test/**/*.js'",
+    "test": "npm run test-build && npm run format-check",
+    "test-build": "NODE_ENV=test webpack --config test/src/webpack.config.js",
+    "format": "prettier --single-quote --write '*.js' 'test/src/**/*.js'",
+    "format-check": "prettier --single-quote --list-different '*.js' 'test/src/**/*.js'",
     "commit": "git-cz",
     "commitmsg": "validate-commit-msg",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"

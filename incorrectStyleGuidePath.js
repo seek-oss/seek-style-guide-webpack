@@ -8,5 +8,5 @@ const explicitlyResolvedIncorrectPath = path.resolve(
 );
 const resolvedPath = require.resolve('seek-style-guide');
 
-module.exports = notTesting &&
-  resolvedPath.indexOf(explicitlyResolvedIncorrectPath) > -1;
+module.exports =
+  notTesting && resolvedPath.indexOf(explicitlyResolvedIncorrectPath) > -1;
