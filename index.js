@@ -130,7 +130,8 @@ const getCommonLoaders = includes => [
         loader: require.resolve('svgo-loader'),
         options: {
           plugins: [
-            { addAttributesToSVGElement: { attribute: 'focusable="false"' } }
+            { addAttributesToSVGElement: { attribute: 'focusable="false"' } },
+            { removeViewBox: false }
           ]
         }
       }
