@@ -14,6 +14,8 @@ const appCss = new ExtractTextPlugin({
 const appPaths = [path.resolve(__dirname, 'app')];
 
 const clientConfig = {
+  mode: 'production',
+
   entry: path.resolve(__dirname, 'app/client-render'),
 
   output: {
@@ -68,21 +70,17 @@ const clientConfig = {
         NODE_ENV: JSON.stringify('production')
       }
     }),
-    appCss,
-    new webpack.optimize.UglifyJsPlugin({
-      output: {
-        comments: false
-      },
-      compress: {
-        warnings: false
-      }
-    })
+    appCss
   ],
+
+  optimization: { minimize: true },
 
   stats: { children: false }
 };
 
 const serverConfig = {
+  mode: 'production',
+
   entry: {
     render: path.resolve(__dirname, 'app/server-render')
   },
@@ -92,6 +90,8 @@ const serverConfig = {
     filename: 'render.js',
     libraryTarget: 'umd'
   },
+
+  target: 'node',
 
   module: {
     rules: [
@@ -128,7 +128,7 @@ const serverConfig = {
       }
     ]
   },
-  plugins: [new StaticSiteGeneratorPlugin('render', '/')]
+  plugins: [new StaticSiteGeneratorPlugin()]
 };
 
 module.exports = [
