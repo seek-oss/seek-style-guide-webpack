@@ -6,22 +6,30 @@
   "scripts": {
     "test": "npm run test-build && npm run format-check",
     "test-build": "NODE_ENV=test webpack --config test/src/webpack.config.js",
-    "format": "prettier --single-quote --write '*.js' 'test/src/**/*.js'",
-    "format-check": "prettier --single-quote --list-different '*.js' 'test/src/**/*.js'",
+    "format": "prettier --write '**/*.{js,md}'",
+    "format-check": "prettier --list-different '**/*.{js,md}'",
     "commit": "git-cz",
-    "commitmsg": "validate-commit-msg",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint --edit --extends seek",
+      "pre-commit": "lint-staged"
+    }
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "cz-conventional-changelog"
     }
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --single-quote --write",
+    "**/*.{js,md}": [
+      "npm run format",
       "git add"
     ]
+  },
+  "release": {
+    "success": false
   },
   "repository": {
     "type": "git",
@@ -59,28 +67,27 @@
     "webpack-node-externals": "^1.6.0"
   },
   "peerDependencies": {
-    "seek-style-guide": ">=26.0.0"
+    "seek-style-guide": "*"
   },
   "devDependencies": {
-    "classnames": "^2.2.5",
-    "commitizen": "^2.9.6",
-    "cz-conventional-changelog": "^2.0.0",
+    "@commitlint/cli": "^7.2.1",
+    "classnames": "^2.2.6",
+    "commitizen": "^3.0.4",
+    "commitlint-config-seek": "^1.0.0",
+    "cz-conventional-changelog": "^2.1.0",
     "extract-text-webpack-plugin": "^3.0.1",
-    "husky": "^0.14.3",
-    "lint-staged": "^6.0.0",
+    "husky": "^1.1.4",
+    "lint-staged": "^8.0.4",
     "lodash.omit": "^4.5.0",
     "lodash.range": "^3.2.0",
     "pad-left": "^2.1.0",
-    "prettier": "^1.7.4",
+    "prettier": "^1.15.2",
     "react": "^16.0.0",
-    "react-autosuggest": "^9.3.2",
     "react-dom": "^16.0.0",
     "react-helmet": "^5.2.0",
-    "react-isolated-scroll": "^0.1.1",
-    "seek-style-guide": ">=26.0.0",
-    "semantic-release": "^8.0.3",
+    "seek-style-guide": "^38.5.0",
+    "semantic-release": "^15.11.0",
     "static-site-generator-webpack-plugin": "^3.4.1",
-    "validate-commit-msg": "^2.14.0",
     "webpack": "^3.6.0"
   }
 }

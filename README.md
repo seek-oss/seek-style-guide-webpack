@@ -15,7 +15,8 @@ $ npm install --save-dev seek-style-guide-webpack
 First, decorate your server Webpack config:
 
 ```js
-const decorateServerConfig = require('seek-style-guide-webpack').decorateServerConfig;
+const decorateServerConfig = require('seek-style-guide-webpack')
+  .decorateServerConfig;
 
 module.exports = decorateServerConfig({
   // Webpack config...
@@ -25,7 +26,8 @@ module.exports = decorateServerConfig({
 Then, decorate your client Webpack config:
 
 ```js
-const decorateClientConfig = require('seek-style-guide-webpack').decorateClientConfig;
+const decorateClientConfig = require('seek-style-guide-webpack')
+  .decorateClientConfig;
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const extractCss = new ExtractTextPlugin({
