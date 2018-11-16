@@ -1,12 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
 const decorateClientConfig = require('../../index').decorateClientConfig;
 const decorateServerConfig = require('../../index').decorateServerConfig;
 
-const appCss = new ExtractTextPlugin({
+const appCss = new MiniCssExtractPlugin({
   filename: 'app.css'
 });
 
@@ -14,11 +14,19 @@ const appCss = new ExtractTextPlugin({
 const appPaths = [path.resolve(__dirname, 'app')];
 
 const clientConfig = {
+  mode: 'production',
+
   entry: path.resolve(__dirname, 'app/client-render'),
 
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: 'index.js'
+  },
+
+  optimization: {
+    nodeEnv: 'production',
+    minimize: true,
+    concatenateModules: true
   },
 
   module: {
@@ -28,27 +36,26 @@ const clientConfig = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [['es2015', { modules: false }], 'react']
+            presets: [['es2015', { modules: false }], 'react'],
+            plugins: ['seek-style-guide']
           }
         },
         include: appPaths
       },
       {
         test: /\.less$/,
-        use: appCss.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                modules: true,
-                localIdentName: '[name]__[local]___[hash:base64:5]'
-              }
-            },
-            'less-loader'
-          ]
-        }),
-        include: appPaths
+        include: appPaths,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              localIdentName: '[name]__[local]___[hash:base64:5]'
+            }
+          },
+          'less-loader'
+        ]
       },
       {
         test: /\.svg$/,
@@ -68,15 +75,7 @@ const clientConfig = {
         NODE_ENV: JSON.stringify('production')
       }
     }),
-    appCss,
-    new webpack.optimize.UglifyJsPlugin({
-      output: {
-        comments: false
-      },
-      compress: {
-        warnings: false
-      }
-    })
+    appCss
   ],
 
   stats: { children: false }
@@ -86,6 +85,10 @@ const serverConfig = {
   entry: {
     render: path.resolve(__dirname, 'app/server-render')
   },
+
+  mode: 'production',
+
+  target: 'node',
 
   output: {
     path: path.resolve(__dirname, '../dist'),
@@ -133,7 +136,7 @@ const serverConfig = {
 
 module.exports = [
   decorateClientConfig(clientConfig, {
-    extractTextPlugin: appCss
+    cssOutputLoader: MiniCssExtractPlugin.loader
   }),
   decorateServerConfig(serverConfig)
 ];

@@ -1,5 +1,4 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const chalk = require('chalk');
 const incorrectStyleGuidePath = require('./incorrectStyleGuidePath');
@@ -13,7 +12,7 @@ const styleGuidePath = path.dirname(require.resolve('seek-style-guide'));
 const styleGuideModules = ['react', 'theme', 'fonts'];
 
 const getIncludePaths = options => {
-  const extraIncludePaths = (options && options.extraIncludePaths) || [];
+  const extraIncludePaths = options.extraIncludePaths || [];
 
   return {
     relative: [
@@ -119,7 +118,7 @@ const getCommonLoaders = includes => [
   {
     test: /\.raw\.js$/,
     include: includes,
-    use: [require.resolve('raw-loader'), require.resolve('uglify-loader')]
+    use: [require.resolve('raw-loader')]
   },
   {
     test: /\.svg$/,
@@ -138,7 +137,7 @@ const getCommonLoaders = includes => [
   }
 ];
 
-const decorateConfig = (config, includes, options) => {
+const decorateConfig = (config, includes, options = {}) => {
   const rules = options.rules || [];
   const plugins = options.plugins || [];
   const externals = options.externals;
@@ -197,7 +196,7 @@ const decorateConfig = (config, includes, options) => {
   return config;
 };
 
-const decorateServerConfig = (config, options) => {
+const decorateServerConfig = (config, options = {}) => {
   const { relative, absolute } = getIncludePaths(options);
 
   return decorateConfig(config, absolute, {
@@ -237,40 +236,18 @@ const postcssPlugins = ({ cssSelectorPrefix } = {}) =>
         ]
   );
 
-const decorateClientConfig = (config, options) => {
-  const extractTextPlugin = options && options.extractTextPlugin;
+const decorateClientConfig = (config, options = {}) => {
   const { absolute } = getIncludePaths(options);
 
-  if (extractTextPlugin === ExtractTextPlugin) {
-    error(
-      `
-      You appear to be passing in a reference to "ExtractTextPlugin"
-      directly, rather than creating an instance via
-      "new ExtractTextPlugin(...)". This causes incorrect CSS to be generated
-      since the style guide also uses extract-text-webpack-plugin to
-      generate its own CSS files for web fonts. As a result, it's
-      important that you create your own instance of ExtractTextPlugin and
-      pass it in instead. If you're not sure how to do this, you can see
-      the Webpack documentation at
-      https://github.com/webpack/extract-text-webpack-plugin/tree/webpack-1
-    `
-    );
-  }
-
-  const decorateStyleLoaders = extractTextPlugin
-    ? loaders =>
-        extractTextPlugin.extract({
-          fallback: require.resolve('style-loader'),
-          use: loaders
-        })
-    : loaders => [require.resolve('style-loader'), ...loaders];
+  const clientCssLoader = options.cssOutputLoader || 'style-loader';
 
   return decorateConfig(config, absolute, {
     rules: [
       {
         test: /\.less$/,
         include: absolute,
-        use: decorateStyleLoaders([
+        use: [
+          clientCssLoader,
           {
             loader: require.resolve('css-loader'),
             options: {
@@ -287,7 +264,7 @@ const decorateClientConfig = (config, options) => {
             }
           },
           require.resolve('less-loader')
-        ])
+        ]
       }
     ]
   });

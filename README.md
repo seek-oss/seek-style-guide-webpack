@@ -15,8 +15,7 @@ $ npm install --save-dev seek-style-guide-webpack
 First, decorate your server Webpack config:
 
 ```js
-const decorateServerConfig = require('seek-style-guide-webpack')
-  .decorateServerConfig;
+const { decorateServerConfig } = require('seek-style-guide-webpack');
 
 module.exports = decorateServerConfig({
   // Webpack config...
@@ -26,27 +25,41 @@ module.exports = decorateServerConfig({
 Then, decorate your client Webpack config:
 
 ```js
-const decorateClientConfig = require('seek-style-guide-webpack')
-  .decorateClientConfig;
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const { decorateClientConfig } = require('seek-style-guide-webpack');
 
-const extractCss = new ExtractTextPlugin({
-  filename: 'style.css'
+module.exports = decorateClientConfig({
+  // Webpack config...
 });
+```
+
+## Options
+
+### CSS Output Loader `{ cssOutputLoader: <webpack loader> | 'style-loader' }`
+
+By default the client decorator will use [`style-loader`](https://github.com/webpack-contrib/style-loader) to handle the styles emitted from the [`seek-style-guide`](https://github.com/seek-oss/seek-style-guide). Alternatively, you can
+pass in your own loader configuration, eg.
+
+```js
+const { decorateClientConfig } = require('seek-style-guide-webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const config = {
   // Webpack config...
+  plugins: [
+    new MiniCssExtractPlugin(
+      filename: 'style.css'
+    })
+  ]
 };
 
 module.exports = decorateClientConfig(config, {
-  // Ensure you pass your ExtractTextPlugin instance to the decorator, if required:
-  extractTextPlugin: extractCss
+  cssOutputLoader: MiniCssExtractPlugin.loader
 });
 ```
 
 Please note that, if your Webpack loaders aren't scoped to your local project files via the ["include" option](https://webpack.github.io/docs/configuration.html#module-loaders), the decorator will throw an error.
 
-### Extra includes
+### Extra includes (optional) `{ extraIncludePaths: Array<paths> }`
 
 If you have other external node_modules that need to be compiled in the same way as the seek-style-guide then you can pass an extra parameter to the decorators.
 
@@ -57,7 +70,7 @@ module.exports = decorateClientConfig(config, {
 });
 ```
 
-### CSS Selector Prefix
+### CSS Selector Prefix (optional) `{ cssSelectorPrefix: string }`
 
 This selector prefix is automatically prepended to all selectors to ensure styles don't leak out into the global scope.
 For example, this is used for generating the standalone header & footer in the style guide.
